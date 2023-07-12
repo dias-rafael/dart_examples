@@ -1,0 +1,42 @@
+void main() { 
+  final List<Student> students = bestStudents(
+    [{[1.5, 2.5, 2.0] : "Joao"},
+     {[5, 2, 3] : "Jose"},
+     {[3, 2.5, 4] : "Pedro"},
+     {[2.5, 1.5, 1] : "Rafael"},
+     {[3.5, 2, 3.5] : "Daniel"},
+     {[4, 1, 2] : "Maria"}]);
+  
+  students.sort(((b, a) => a.average.compareTo(b.average)));
+  
+  for (var i=0; i<3; i++) {
+    print(students[i].toString());
+  }
+}
+
+class Student{
+  final String name;
+  final double average;
+
+  const Student({required this.name, required this.average});
+
+  @override
+  toString() => {"name": name, "average": average}.toString();
+}
+
+List<Student> bestStudents(List<Map<List<double>, String>> students) {
+  late double sumValues, average;
+  late String studentName;
+  List<Student> studentsList = [];
+
+  students.forEach((element) {
+    for (final entry in element.entries) {
+       studentName = entry.value;
+       sumValues = entry.key.reduce((a, b) => a + b);  
+       average = double.tryParse((sumValues/entry.key.length).toStringAsFixed(2)) ?? 0.00;
+    }
+    studentsList.add(Student(name: studentName, average: average));
+  });
+
+  return studentsList;
+}
